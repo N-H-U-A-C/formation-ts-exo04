@@ -60,11 +60,11 @@ export default class Fight {
         const attack = attacker.attack;
         const defense = defender.defense;
         switch (hitRoll) {
-            case 1:
+            case 10:
                 console.log("\tTouche critique !");
                 hasHit = true;
                 break;
-            case 2:
+            case 1:
                 console.log("\tEchec critique !");
                 break;
             default:
