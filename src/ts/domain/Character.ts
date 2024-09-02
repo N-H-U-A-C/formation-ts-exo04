@@ -71,6 +71,7 @@ export default class Character {
         this.hitpoint = -10;
         this._attack++;
         this._defense++;
+        alert(`Vous avez gagné un niveau !\nNiveau: ${this._level}\nPV: ${this._hitpoint}\nAttaque: ${this._attack}\nDéfense: ${this._defense}`);
     }
 
     get level(): number {

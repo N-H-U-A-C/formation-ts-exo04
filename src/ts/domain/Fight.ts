@@ -16,14 +16,6 @@ export default class Fight {
         this.startFight();
     }
 
-    get character(): Character {
-        return this._character;
-    }
-
-    get monster(): Monster {
-        return this._monster;
-    }
-
     startFight(): void {
         do {
             this.resolveTurn();
@@ -40,7 +32,8 @@ export default class Fight {
     }
 
     private gainExperience() {
-        this._character.experience = this._monster.level * 10;
+        // this._character.experience = this._monster.level * 10;
+        this._character.experience = 50;
     }
 
     resolveTurn(): void {
@@ -50,10 +43,22 @@ export default class Fight {
     }
 
     attack(attacker: Character | Monster, defender: Character | Monster): void {
-        // to hit roll
+        // roll to hit
+        let hasHit = this.rollToHit(attacker, defender);
+
+        // roll to wound
+        this.rollToWound(hasHit, attacker, defender);
+
+        // toggle player/monster turn
+        this._playerTurn = !this._playerTurn;
+    }
+
+    private rollToHit(attacker: Character | Monster, defender: Character | Monster) {
         console.log(`${attacker} attaque:`);
         let hasHit: boolean = false;
         const hitRoll: number = rollD10();
+        const attack = attacker.attack;
+        const defense = defender.defense;
         switch (hitRoll) {
             case 1:
                 console.log("\tTouche critique !");
@@ -63,28 +68,29 @@ export default class Fight {
                 console.log("\tEchec critique !");
                 break;
             default:
-                if (hitRoll + attacker.attack - defender.defense > 5) {
-                    console.log("\tTouche réussie:");
+                if (hitRoll + attack - defense > 5) {
+                    console.log(`\t${hitRoll} + ${attack} - ${defense} -> Touche réussie`);
                     hasHit = true;
                 } else {
                     console.log("\tTouche ratée.");
                 }
                 break;
         }
+        return hasHit;
+    }
 
-        // to wound roll
+    private rollToWound(hasHit: boolean, attacker: Character | Monster, defender: Character | Monster) {
         if (hasHit) {
             const woundRoll = rollD10();
-            const damage: number = Math.max(woundRoll + attacker.weapon.damage - defender.armor.protection, 0);
-            console.log(`\t${attacker.weapon} vs ${defender.armor}\n\t\t${damage} dégât(s).`);
+            const weaponDamage = attacker.weapon.damage;
+            const armorProtection = defender.armor.protection;
+            const damage: number = Math.max(woundRoll + weaponDamage - armorProtection, 0);
+            console.log(`\t${attacker.weapon} vs ${defender.armor}\n\t\t${woundRoll} + ${weaponDamage} - ${armorProtection} -> ${damage} dégâts`);
             defender.hitpoint = damage;
             if (defender.hitpoint <= 0) {
                 this._isOver = true;
             }
         }
-
-        // toggle player/monster turn
-        this._playerTurn = !this._playerTurn;
     }
 
     private askPlayerChoice(): void {
