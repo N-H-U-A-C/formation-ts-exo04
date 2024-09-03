@@ -32,8 +32,7 @@ export default class Fight {
     }
 
     private gainExperience() {
-        // this._character.experience = this._monster.level * 10;
-        this._character.experience = 50;
+        this._character.experience = this._monster.level * 10;
     }
 
     resolveTurn(): void {
@@ -69,7 +68,7 @@ export default class Fight {
                 break;
             default:
                 if (hitRoll + attack - defense > 5) {
-                    console.log(`\t${hitRoll} + ${attack} - ${defense} -> Touche réussie`);
+                    console.log(`\t${hitRoll} + ${attack} - ${defense} => Touche réussie`);
                     hasHit = true;
                 } else {
                     console.log("\tTouche ratée.");
@@ -85,7 +84,7 @@ export default class Fight {
             const weaponDamage = attacker.weapon.damage;
             const armorProtection = defender.armor.protection;
             const damage: number = Math.max(woundRoll + weaponDamage - armorProtection, 0);
-            console.log(`\t${attacker.weapon} vs ${defender.armor}\n\t\t${woundRoll} + ${weaponDamage} - ${armorProtection} -> ${damage} dégâts`);
+            console.log(`\t${attacker.weapon} vs ${defender.armor}\n\t\t${woundRoll} + ${weaponDamage} - ${armorProtection} => ${damage} dégâts`);
             defender.hitpoint = damage;
             if (defender.hitpoint <= 0) {
                 this._isOver = true;

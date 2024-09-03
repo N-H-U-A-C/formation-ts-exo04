@@ -3,6 +3,7 @@ import Weapon from "./Weapon.js";
 
 export default class Character {
     private _name: string;
+    private _hitpointMax: number;
     private _hitpoint: number;
     private _attack: number;
     private _defense: number;
@@ -13,7 +14,8 @@ export default class Character {
 
     constructor(name: string) {
         this._name = name;
-        this._hitpoint = 100;
+        this._hitpointMax = 100;
+        this._hitpoint = this._hitpointMax;
         this._attack = 1;
         this._defense = 1;
         this._armor = new Armor("Armure en bois", 1);
@@ -28,6 +30,14 @@ export default class Character {
 
     get name(): string {
         return this._name;
+    }
+
+    get hitpointMax(): number {
+        return this._hitpointMax;
+    }
+
+    set hitpointMax(value: number) {
+        this._hitpointMax -= value;
     }
 
     get hitpoint(): number {
@@ -68,10 +78,11 @@ export default class Character {
 
     private gainLevel() {
         this._level++;
-        this.hitpoint = -10;
+        this.hitpointMax = -10;
+        this._hitpoint = this.hitpointMax;
         this._attack++;
         this._defense++;
-        alert(`Vous avez gagné un niveau !\nNiveau: ${this._level}\nPV: ${this._hitpoint}\nAttaque: ${this._attack}\nDéfense: ${this._defense}`);
+        alert(`Vous avez gagné un niveau !\nNiveau: ${this._level} (+1)\nPV: ${this._hitpoint} (+10)\nAttaque: ${this._attack} (+1)\nDéfense: ${this._defense} (+1)`);
     }
 
     get level(): number {

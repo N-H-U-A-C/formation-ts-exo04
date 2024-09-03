@@ -26,6 +26,10 @@ const character: Character = new Character(characterName);
 
 // run the game
 do {
-    let randomMonster: Monster =  monsters[Math.floor(Math.random() * monsters.length)].clone();
+    let randomMonster: Monster =  getRandomMonster();
     let fight: Fight = new Fight(character, randomMonster);
 } while (character.hitpoint > 0);
+
+function getRandomMonster() {
+    return monsters[Math.floor(Math.random() * monsters.length)].clone();
+}
